@@ -14,7 +14,7 @@ const satoshi = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "FinTrack — Sandbox Demo",
+  title: "Finance Tracker — Sandbox Demo",
   description: "AI-powered personal finance dashboard with Plaid sandbox integration",
 }
 
