@@ -1,0 +1,147 @@
+# FinTrack — AI-Powered Finance Dashboard (Sandbox Demo)
+
+A personal finance dashboard built with Next.js, Plaid, Supabase, and Claude AI. This version uses Plaid's **Sandbox** environment so you can explore the full experience with test data — no real bank accounts needed.
+
+## Features
+
+- **Plaid Link Integration** — Connect sandbox bank accounts using Plaid's test credentials
+- **Transaction Syncing** — Automatic sync of transactions using Plaid's `/transactions/sync` endpoint
+- **Spending Dashboard** — 30-day spending summary with category breakdowns and charts
+- **Account Overview** — View balances across checking, savings, and credit accounts
+- **Recurring Detection** — Automatically identifies recurring charges and subscriptions
+- **Payoff Planner** — Credit card payoff calculator with APR-aware projections
+- **AI Chat** — Ask questions about your finances using Claude (powered by Anthropic)
+- **Dark Mode** — Clean, modern dark UI built with Tailwind CSS and shadcn/ui
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 15 (App Router, Turbopack) |
+| Language | TypeScript 5 |
+| UI | Tailwind CSS 4, shadcn/ui, Recharts |
+| State | Zustand |
+| Database | Supabase (PostgreSQL) |
+| Banking API | Plaid (Sandbox) |
+| AI | Anthropic Claude (via AI SDK) |
+| Deployment | Vercel |
+
+## Getting Started
+
+### Prerequisites
+
+You'll need free accounts on these platforms:
+
+- [Plaid](https://dashboard.plaid.com/signup) — for the banking API (sandbox is free)
+- [Supabase](https://supabase.com) — for the database
+- [Anthropic](https://console.anthropic.com) — for AI chat (optional)
+
+### 1. Clone and Install
+
+```bash
+git clone <your-repo-url>
+cd 100xengineers-project-1
+npm install
+```
+
+### 2. Set Up Supabase
+
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Go to **SQL Editor** and run the migration file:
+
+```
+supabase/migrations/001_initial_schema.sql
+```
+
+3. Copy your project URL, anon key, and service role key from **Settings > API**
+
+### 3. Set Up Plaid
+
+1. Sign up at [dashboard.plaid.com](https://dashboard.plaid.com)
+2. Your Client ID and Sandbox Secret are on the **Keys** page
+3. Make sure you're using the **Sandbox** secret (not Development or Production)
+
+### 4. Configure Environment Variables
+
+```bash
+cp .env.example .env.local
+```
+
+Then fill in your keys in `.env.local`:
+
+```env
+APP_PASSWORD=demo
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+PLAID_CLIENT_ID=your_plaid_client_id
+PLAID_SECRET=your_plaid_sandbox_secret
+ANTHROPIC_API_KEY=your_anthropic_key
+```
+
+### 5. Run the App
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) and log in with the password you set in `APP_PASSWORD`.
+
+### 6. Connect a Sandbox Bank
+
+1. Click **Connect Bank Account** on the dashboard
+2. Select any institution in the Plaid Link modal
+3. Use these test credentials:
+   - Username: `user_good`
+   - Password: `pass_good`
+4. Your sandbox accounts and transactions will sync automatically
+
+## Sandbox Test Credentials
+
+| Username | Password | Description |
+|----------|----------|-------------|
+| `user_good` | `pass_good` | Standard test user with checking + savings |
+
+For more test scenarios, see [Plaid's Sandbox docs](https://plaid.com/docs/sandbox/).
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── (app)/              # Protected dashboard routes
+│   ├── api/
+│   │   ├── auth/           # Password authentication
+│   │   ├── chat/           # AI chat endpoint
+│   │   ├── dashboard/      # Dashboard data aggregation
+│   │   └── plaid/          # Plaid integration endpoints
+│   │       ├── accounts/       # List connected accounts
+│   │       ├── create-link-token/  # Generate Plaid Link token
+│   │       ├── exchange-token/     # Exchange public token
+│   │       └── sync/              # Trigger transaction sync
+│   └── login/              # Login page
+├── components/
+│   ├── chat/               # AI chat components
+│   ├── dashboard/          # Dashboard widgets
+│   ├── layout/             # Nav components
+│   ├── plaid/              # Plaid Link components
+│   └── ui/                 # shadcn/ui base components
+└── lib/
+    ├── plaid/              # Plaid client & sync logic
+    ├── queries/            # Supabase query functions
+    ├── store/              # Zustand state management
+    └── supabase/           # Supabase client factory
+```
+
+## Deployment
+
+Deploy to Vercel:
+
+1. Push to GitHub
+2. Import the repo on [vercel.com](https://vercel.com)
+3. Add all environment variables in project settings
+4. Deploy
+
+## License
+
+MIT

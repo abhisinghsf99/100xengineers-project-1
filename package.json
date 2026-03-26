@@ -1,0 +1,52 @@
+{
+  "name": "fintrack-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run --reporter=verbose"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.58",
+    "@ai-sdk/mcp": "^1.0.25",
+    "@ai-sdk/react": "^3.0.118",
+    "@base-ui/react": "^1.2.0",
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "@supabase/supabase-js": "^2.99.0",
+    "ai": "^6.0.116",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.577.0",
+    "next": "15.5.12",
+    "plaid": "^41.4.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-markdown": "^10.1.0",
+
+    "recharts": "^2.15.4",
+    "remark-gfm": "^4.0.1",
+    "shadcn": "^4.0.3",
+    "tailwind-merge": "^3.5.0",
+    "tw-animate-css": "^1.4.0",
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5.1.4",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.12",
+    "jsdom": "^28.1.0",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^4.0.18"
+  }
+}
