@@ -1,8 +1,10 @@
 import { streamText, convertToModelMessages, UIMessage, stepCountIs } from 'ai';
-import { anthropic } from '@ai-sdk/anthropic';
+import { createGroq } from '@ai-sdk/groq';
 import { SYSTEM_PROMPT } from '@/lib/chat-config';
 import { createServerSupabase } from '@/lib/supabase/server';
 import { z } from 'zod';
+
+const groq = createGroq();
 
 export const maxDuration = 300;
 
@@ -10,7 +12,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: anthropic('claude-sonnet-4-20250514'),
+    model: groq('openai/gpt-oss-120b'),
     system: SYSTEM_PROMPT,
     messages: await convertToModelMessages(messages),
     tools: {

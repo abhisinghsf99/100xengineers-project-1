@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.58",
+    "@ai-sdk/groq": "^3.0.35",
     "@ai-sdk/mcp": "^1.0.25",
     "@ai-sdk/react": "^3.0.118",
     "@base-ui/react": "^1.2.0",
@@ -25,7 +26,6 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-markdown": "^10.1.0",
-
     "recharts": "^2.15.4",
     "remark-gfm": "^4.0.1",
     "shadcn": "^4.0.3",
