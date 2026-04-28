@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useCallback, useState } from 'react';
-import { useChat, type UIMessage } from '@ai-sdk/react';
-import { ArrowLeft, RefreshCw, Loader2 } from 'lucide-react';
+import { useEffect, useRef, useCallback } from 'react';
+import { useChat } from '@ai-sdk/react';
+import { ArrowLeft, RefreshCw } from 'lucide-react';
 import { ChatMessage } from '@/components/chat/chat-message';
 import { ChatInput } from '@/components/chat/chat-input';
 import { SuggestionChips } from '@/components/chat/suggestion-chips';
@@ -12,94 +12,13 @@ interface ChatViewProps {
   onClose: () => void;
 }
 
-/**
- * Extract plain text content from a UIMessage.
- * Messages can have parts (text, tool-call, etc.) — we only want the text.
- */
-function getMessageText(message: UIMessage): string {
-  if (message.parts) {
-    return message.parts
-      .filter((p): p is { type: 'text'; text: string } => p.type === 'text')
-      .map((p) => p.text)
-      .join('\n');
-  }
-  return '';
-}
-
 export function ChatView({ onClose }: ChatViewProps) {
   const { messages, sendMessage, status, setMessages, error } = useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
-  const savedIdsRef = useRef<Set<string>>(new Set());
 
   const isLoading = status === 'streaming' || status === 'submitted';
-  const isEmpty = messages.length === 0 && !isLoadingHistory;
+  const isEmpty = messages.length === 0;
 
-  // Load chat history from Supabase on mount
-  useEffect(() => {
-    async function loadHistory() {
-      try {
-        const res = await fetch('/api/chat/history');
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data.messages && data.messages.length > 0) {
-          const restored: UIMessage[] = data.messages.map(
-            (m: { id: string; role: string; content: string; created_at: string }) => ({
-              id: m.id,
-              role: m.role as 'user' | 'assistant',
-              parts: [{ type: 'text' as const, text: m.content }],
-              createdAt: new Date(m.created_at),
-            })
-          );
-          // Track all loaded IDs so we don't re-save them
-          restored.forEach((m) => savedIdsRef.current.add(m.id));
-          setMessages(restored);
-        }
-      } catch (err) {
-        console.error('Failed to load chat history:', err);
-      } finally {
-        setIsLoadingHistory(false);
-      }
-    }
-    loadHistory();
-  }, [setMessages]);
-
-  // Save new messages to Supabase whenever the messages array updates
-  // and we're not actively streaming
-  useEffect(() => {
-    if (status === 'streaming' || status === 'submitted') return;
-    if (messages.length === 0) return;
-
-    const unsaved = messages.filter(
-      (m) =>
-        (m.role === 'user' || m.role === 'assistant') &&
-        !savedIdsRef.current.has(m.id)
-    );
-
-    if (unsaved.length === 0) return;
-
-    // Save each unsaved message
-    const toSave = unsaved.map((m) => ({
-      id: m.id,
-      role: m.role,
-      content: getMessageText(m),
-    }));
-
-    // Mark as saved immediately to prevent duplicates
-    unsaved.forEach((m) => savedIdsRef.current.add(m.id));
-
-    fetch('/api/chat/history', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: toSave }),
-    }).catch((err) => {
-      console.error('Failed to save chat messages:', err);
-      // Remove from saved set so we retry next time
-      unsaved.forEach((m) => savedIdsRef.current.delete(m.id));
-    });
-  }, [messages, status]);
-
-  // Auto-scroll to bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
@@ -108,16 +27,8 @@ export function ChatView({ onClose }: ChatViewProps) {
     sendMessage({ parts: [{ type: 'text', text }] });
   }
 
-  const handleNewChat = useCallback(async () => {
-    // Clear messages locally
+  const handleNewChat = useCallback(() => {
     setMessages([]);
-    savedIdsRef.current.clear();
-    // Clear from Supabase
-    try {
-      await fetch('/api/chat/history', { method: 'DELETE' });
-    } catch (err) {
-      console.error('Failed to clear chat history:', err);
-    }
   }, [setMessages]);
 
   return (
@@ -145,11 +56,7 @@ export function ChatView({ onClose }: ChatViewProps) {
 
       {/* Messages area */}
       <div className="flex-1 overflow-y-auto px-4 py-4">
-        {isLoadingHistory ? (
-          <div className="flex-1 flex items-center justify-center h-full">
-            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-          </div>
-        ) : isEmpty ? (
+        {isEmpty ? (
           <div className="flex-1 flex items-center justify-center h-full">
             <SuggestionChips onSelect={handleSend} />
           </div>
