@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: groq('openai/gpt-oss-120b'),
+    model: groq('llama-3.3-70b-versatile'),
     system: SYSTEM_PROMPT,
     messages: await convertToModelMessages(messages),
     tools: {
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
         },
       },
     },
-    stopWhen: stepCountIs(3),
+    stopWhen: stepCountIs(5),
   });
 
   return result.toUIMessageStreamResponse();
