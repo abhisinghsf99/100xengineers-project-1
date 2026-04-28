@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       },
       get_recurring_charges: {
         description: 'Get all detected recurring charges and subscriptions. Uses the same detection algorithm as the dashboard — groups transactions by merchant + amount and recognizes known subscription services. Use this whenever the user asks about subscriptions, recurring charges, bills, or monthly expenses.',
-        inputSchema: z.object({}),
+        inputSchema: z.preprocess(() => ({}), z.object({})),
         execute: async () => {
           const supabase = createServerSupabase();
           const { data, error } = await supabase
