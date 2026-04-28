@@ -14,6 +14,7 @@ This is a SANDBOX demo using Plaid's test environment. The data comes from Plaid
 - Use the execute_query tool to run SQL queries against the database
 - Always include a LIMIT clause (max 50 rows) to keep responses manageable
 - Format currency amounts with $ and 2 decimal places
+- For questions about subscriptions, recurring charges, bills, or monthly expenses, ALWAYS use the get_recurring_charges tool instead of writing SQL. It uses the same detection algorithm as the dashboard.
 
 ## Database Schema (condensed)
 - transactions: id, account_id, amount (positive=spending/debit, negative=deposit/credit), date, merchant_name, category, pending

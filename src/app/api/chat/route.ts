@@ -2,6 +2,8 @@ import { streamText, convertToModelMessages, UIMessage, stepCountIs } from 'ai';
 import { createGroq } from '@ai-sdk/groq';
 import { SYSTEM_PROMPT } from '@/lib/chat-config';
 import { createServerSupabase } from '@/lib/supabase/server';
+import { detectRecurring, estimateMonthlyTotal } from '@/lib/recurring-detection';
+import type { Transaction } from '@/lib/queries/types';
 import { z } from 'zod';
 
 const groq = createGroq();
@@ -22,7 +24,6 @@ export async function POST(req: Request) {
           query: z.string().describe('The SQL SELECT query to execute'),
         }),
         execute: async ({ query }: { query: string }) => {
-          // Safety check: only allow SELECT queries
           const trimmed = query.trim().toUpperCase();
           if (!trimmed.startsWith('SELECT')) {
             return { error: 'Only SELECT queries are allowed' };
@@ -38,6 +39,36 @@ export async function POST(req: Request) {
           }
 
           return { rows: data, count: Array.isArray(data) ? data.length : 0 };
+        },
+      },
+      get_recurring_charges: {
+        description: 'Get all detected recurring charges and subscriptions. Uses the same detection algorithm as the dashboard — groups transactions by merchant + amount and recognizes known subscription services. Use this whenever the user asks about subscriptions, recurring charges, bills, or monthly expenses.',
+        inputSchema: z.object({}),
+        execute: async () => {
+          const supabase = createServerSupabase();
+          const { data, error } = await supabase
+            .from('transactions')
+            .select('*')
+            .order('date', { ascending: false });
+
+          if (error) {
+            return { error: `Failed to fetch transactions: ${error.message}` };
+          }
+
+          const charges = detectRecurring(data as Transaction[]);
+          const monthlyTotal = estimateMonthlyTotal(charges);
+
+          return {
+            charges: charges.map(c => ({
+              merchant: c.merchantName,
+              amount: c.amount,
+              frequency: c.frequency,
+              lastCharged: c.lastChargeDate,
+              occurrences: c.chargeCount,
+            })),
+            count: charges.length,
+            estimatedMonthlyTotal: Math.round(monthlyTotal * 100) / 100,
+          };
         },
       },
     },

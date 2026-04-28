@@ -19,8 +19,16 @@ export function ChatView({ onClose }: ChatViewProps) {
   const isLoading = status === 'streaming' || status === 'submitted';
   const isEmpty = messages.length === 0;
 
+  const prevMessageCountRef = useRef(0);
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const count = messages.length;
+    if (count !== prevMessageCountRef.current) {
+      prevMessageCountRef.current = count;
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    } else if (isLoading) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'instant' });
+    }
   }, [messages, isLoading]);
 
   function handleSend(text: string) {
