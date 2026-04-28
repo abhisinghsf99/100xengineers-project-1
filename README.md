@@ -70,7 +70,6 @@ cp .env.example .env.local
 Then fill in your keys in `.env.local`:
 
 ```env
-APP_PASSWORD=demo
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
@@ -85,7 +84,7 @@ ANTHROPIC_API_KEY=your_anthropic_key
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and log in with the password you set in `APP_PASSWORD`.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ### 6. Connect a Sandbox Bank
 
@@ -111,7 +110,6 @@ src/
 ├── app/
 │   ├── (app)/              # Protected dashboard routes
 │   ├── api/
-│   │   ├── auth/           # Password authentication
 │   │   ├── chat/           # AI chat endpoint
 │   │   ├── dashboard/      # Dashboard data aggregation
 │   │   └── plaid/          # Plaid integration endpoints
@@ -119,7 +117,6 @@ src/
 │   │       ├── create-link-token/  # Generate Plaid Link token
 │   │       ├── exchange-token/     # Exchange public token
 │   │       └── sync/              # Trigger transaction sync
-│   └── login/              # Login page
 ├── components/
 │   ├── chat/               # AI chat components
 │   ├── dashboard/          # Dashboard widgets
