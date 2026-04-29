@@ -2,7 +2,7 @@ import { streamText, convertToModelMessages, UIMessage, stepCountIs } from 'ai';
 import { createGroq } from '@ai-sdk/groq';
 import { SYSTEM_PROMPT } from '@/lib/chat-config';
 import { createServerSupabase } from '@/lib/supabase/server';
-import { detectRecurring, estimateMonthlyTotal } from '@/lib/recurring-detection';
+import { detectRecurring, estimateMonthlyTotal, isLikelySubscription } from '@/lib/recurring-detection';
 import type { Transaction } from '@/lib/queries/types';
 import { z } from 'zod';
 
@@ -55,7 +55,10 @@ export async function POST(req: Request) {
             return { error: `Failed to fetch transactions: ${error.message}` };
           }
 
-          const charges = detectRecurring(data as Transaction[]);
+          const allCharges = detectRecurring(data as Transaction[]);
+          const charges = allCharges.filter(c =>
+            c.transactions.some(t => isLikelySubscription(t))
+          );
           const monthlyTotal = estimateMonthlyTotal(charges);
 
           return {

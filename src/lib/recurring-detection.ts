@@ -69,7 +69,7 @@ const SUBSCRIPTION_KEYWORDS = new Set([
   "t-mobile", "xfinity",
 ])
 
-function isLikelySubscription(t: Transaction): boolean {
+export function isLikelySubscription(t: Transaction): boolean {
   const name = (t.merchant_name || t.name || "").toLowerCase()
   for (const keyword of SUBSCRIPTION_KEYWORDS) {
     if (name.includes(keyword)) return true
