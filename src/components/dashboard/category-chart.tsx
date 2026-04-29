@@ -22,7 +22,7 @@ const NON_SPENDING_CATEGORIES = new Set([
 
 interface CategoryChartProps {
   data: { category: string; total: number; count: number }[]
-  yearMonth: string
+  yearMonth?: string
   transactions: Transaction[]
 }
 
@@ -35,7 +35,6 @@ function prettifyCategory(category: string): string {
 
 export default function CategoryChart({
   data: rawData,
-  yearMonth: _yearMonth,
   transactions,
 }: CategoryChartProps) {
   // Exclude non-spending categories from the chart

@@ -89,7 +89,6 @@ export function SummaryCards({ transactions }: SummaryCardsProps) {
           <div className="flex items-center justify-center">
             <CategoryChart
               data={categorySpending}
-              yearMonth=""
               transactions={transactions}
             />
           </div>
