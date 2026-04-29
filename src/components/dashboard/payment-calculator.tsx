@@ -41,7 +41,7 @@ function calculatePayoff(
     const months = Math.ceil(balance / monthlyPayment)
     return {
       monthlyPayment,
-      totalPaid: monthlyPayment * months,
+      totalPaid: balance,
       totalInterest: 0,
       months,
       warning: null,
@@ -53,7 +53,7 @@ function calculatePayoff(
   let totalInterestPaid = 0
   let month = 0
 
-  while (remainingBalance > 0.01 && month < maxMonths) {
+  while (remainingBalance > 0.005 && month < maxMonths) {
     const monthlyInterest = remainingBalance * monthlyRate
 
     if (monthlyPayment <= monthlyInterest) {
@@ -221,7 +221,7 @@ export function PaymentCalculator() {
               <p className="text-sm text-red-400">{result.warning}</p>
             ) : (
               <>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div>
                     <p className="text-xs text-muted-foreground">
                       Months to Payoff

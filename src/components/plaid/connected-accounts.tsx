@@ -86,7 +86,7 @@ export function ConnectedAccounts() {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+      <CardHeader className="flex flex-col gap-3 pb-4 sm:flex-row sm:items-center sm:justify-between">
         <CardTitle className="text-lg font-semibold">Connected Banks</CardTitle>
         <div className="flex items-center gap-2">
           {institutions.length > 0 && (

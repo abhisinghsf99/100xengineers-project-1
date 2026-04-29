@@ -57,7 +57,7 @@ export function TransactionsToolbar({
         className="shrink-0 gap-1.5"
       >
         <Filter className="h-4 w-4" />
-        Filter
+        <span className="hidden sm:inline">Filter</span>
         {activeFilterCount > 0 && (
           <span className="ml-1 inline-flex items-center justify-center h-5 w-5 rounded-full bg-cyan-600 text-white text-xs font-medium">
             {activeFilterCount}
@@ -71,7 +71,7 @@ export function TransactionsToolbar({
           className="inline-flex items-center justify-center gap-1.5 rounded-md border border-input bg-transparent px-3 h-8 text-sm font-medium whitespace-nowrap hover:bg-accent hover:text-accent-foreground shrink-0"
         >
           <ArrowUpDown className="h-4 w-4" />
-          Sort
+          <span className="hidden sm:inline">Sort</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           {SORT_OPTIONS.map((option) => (

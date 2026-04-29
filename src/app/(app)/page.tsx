@@ -8,6 +8,7 @@ import { PaymentCalculator } from "@/components/dashboard/payment-calculator"
 import { TransactionsPanel } from "@/components/dashboard/transactions-panel"
 import { RecurringPanel } from "@/components/dashboard/recurring-panel"
 import { ChatFABWrapper } from "@/components/chat/chat-fab-wrapper"
+import { ConnectedAccounts } from "@/components/plaid/connected-accounts"
 import { useDashboardStore } from "@/lib/store/dashboard-store"
 
 function DashboardSkeleton() {
@@ -84,25 +85,28 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Summary Section */}
       <section id="summary" className="scroll-mt-16">
-        <h2 className="text-xl font-semibold mb-4">Spending Summary</h2>
+        <h2 className="text-lg font-semibold mb-4 sm:text-xl">Spending Summary</h2>
         <SummaryCards transactions={transactions} />
       </section>
 
       {/* Accounts Section */}
       <section id="accounts" className="scroll-mt-16">
-        <h2 className="text-xl font-semibold mb-4">Accounts</h2>
-        <AccountCards accounts={accounts} />
+        <h2 className="text-lg font-semibold mb-4 sm:text-xl">Accounts</h2>
+        <div className="space-y-4">
+          <ConnectedAccounts />
+          <AccountCards accounts={accounts} />
+        </div>
       </section>
 
       {/* Payoff Planner Section */}
       <section id="payoff-planner" className="scroll-mt-16">
-        <h2 className="text-xl font-semibold mb-4">Payoff Planner</h2>
+        <h2 className="text-lg font-semibold mb-4 sm:text-xl">Payoff Planner</h2>
         <PaymentCalculator />
       </section>
 
       {/* Transactions Section */}
       <section id="transactions" className="scroll-mt-16">
-        <h2 className="text-xl font-semibold mb-4">Transactions</h2>
+        <h2 className="text-lg font-semibold mb-4 sm:text-xl">Transactions</h2>
         <TransactionsPanel
           transactions={transactions}
           accounts={accountsList}
@@ -111,7 +115,7 @@ export default function DashboardPage() {
 
       {/* Recurring Section */}
       <section id="recurring" className="scroll-mt-16">
-        <h2 className="text-xl font-semibold mb-4">Recurring Charges</h2>
+        <h2 className="text-lg font-semibold mb-4 sm:text-xl">Recurring Charges</h2>
         <RecurringPanel transactions={transactions} />
       </section>
 
