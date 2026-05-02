@@ -4,6 +4,8 @@ import { createServerSupabase } from '@/lib/supabase/server'
 import { EXCLUDED_SUBTYPES } from '@/lib/plaid/excluded-accounts'
 import { Products, SandboxPublicTokenCreateRequestOptions } from 'plaid'
 
+export const maxDuration = 60;
+
 /**
  * Seeds sandbox data by creating a test item via Plaid's sandbox API,
  * then pulling accounts and transactions into Supabase.
