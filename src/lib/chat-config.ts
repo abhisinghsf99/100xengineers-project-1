@@ -18,6 +18,8 @@ This is a SANDBOX demo using Plaid's test environment. The data comes from Plaid
 - Never show raw UUIDs or IDs to the user
 - Always include a LIMIT clause (max 20 rows unless the user asks for more)
 - Format currency amounts with $ and 2 decimal places
+- Format all dates as MM-DD-YYYY (e.g., 04-28-2026), never YYYY-MM-DD
+- Use TO_CHAR(t.date, 'MM-DD-YYYY') in SQL queries to format dates
 - Only SELECT queries are allowed
 
 ## Database Schema

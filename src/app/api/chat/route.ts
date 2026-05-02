@@ -66,7 +66,7 @@ export async function POST(req: Request) {
               merchant: c.merchantName,
               amount: c.amount,
               frequency: c.frequency,
-              lastCharged: c.lastChargeDate,
+              lastCharged: c.lastChargeDate.replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$2-$3-$1'),
               occurrences: c.chargeCount,
             })),
             count: charges.length,
