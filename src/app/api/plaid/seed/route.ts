@@ -246,8 +246,11 @@ export async function POST() {
       liabilities_added: liabilitiesAdded,
     })
   } catch (error: unknown) {
-    console.error('Sandbox seed error:', error)
-    const message = error instanceof Error ? error.message : 'Failed to seed sandbox data'
+    const plaidError = (error as { response?: { data?: unknown } })?.response?.data
+    console.error('Sandbox seed error:', JSON.stringify(plaidError ?? error))
+    const message = plaidError
+      ? JSON.stringify(plaidError)
+      : error instanceof Error ? error.message : 'Failed to seed sandbox data'
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }
