@@ -28,6 +28,9 @@ export function RecurringRow({ charge }: RecurringRowProps) {
         <Badge variant="outline" className="text-xs">
           {frequencyLabels[charge.frequency]}
         </Badge>
+        <span className="text-xs text-muted-foreground w-8 text-right">
+          {charge.chargeCount}x
+        </span>
       </div>
     </div>
   )
