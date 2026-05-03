@@ -196,11 +196,9 @@ function AccountCard({ account }: { account: Account }) {
             <span className="text-xs text-muted-foreground">{mask}</span>
           )}
         </div>
-        {isCredit && (
-          <>
-            <CreditUtilizationBar account={account} />
-            <CreditLiabilityInfo accountId={account.id} />
-          </>
+        {isCredit && <CreditUtilizationBar account={account} />}
+        {(isCredit || account.type === "loan") && (
+          <CreditLiabilityInfo accountId={account.id} />
         )}
       </CardContent>
     </Card>
