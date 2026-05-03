@@ -8,7 +8,6 @@ import { PaymentCalculator } from "@/components/dashboard/payment-calculator"
 import { TransactionsPanel } from "@/components/dashboard/transactions-panel"
 import { RecurringPanel } from "@/components/dashboard/recurring-panel"
 import { ChatFABWrapper } from "@/components/chat/chat-fab-wrapper"
-import { ConnectedAccounts } from "@/components/plaid/connected-accounts"
 import { useDashboardStore } from "@/lib/store/dashboard-store"
 
 function DashboardSkeleton() {
@@ -92,10 +91,7 @@ export default function DashboardPage() {
       {/* Accounts Section */}
       <section id="accounts" className="scroll-mt-16">
         <h2 className="text-lg font-semibold mb-4 sm:text-xl">Accounts</h2>
-        <div className="space-y-4">
-          <ConnectedAccounts />
-          <AccountCards accounts={accounts} />
-        </div>
+        <AccountCards accounts={accounts} />
       </section>
 
       {/* Payoff Planner Section */}
