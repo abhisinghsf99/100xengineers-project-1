@@ -23,7 +23,6 @@ export async function GET() {
     supabase
       .from("transactions")
       .select("*, accounts(name)")
-      .gte("date", cutoffDate)
       .order("date", { ascending: false }),
   ])
 
@@ -71,7 +70,7 @@ export async function GET() {
   let totalSpend30Days = 0
 
   for (const t of transactions) {
-    if (t.amount > 0) {
+    if (t.amount > 0 && (t as { date?: string }).date! >= cutoffDate) {
       const cat = t.category_primary ?? "OTHER"
       const entry = categoryMap.get(cat) ?? { total: 0, count: 0 }
       entry.total += t.amount

@@ -79,7 +79,7 @@ export function TransactionFilterPopover({
                       : undefined,
                   })
                 }
-                className="flex h-8 w-full rounded-md border border-input bg-transparent px-2 py-1 text-xs"
+                className="flex h-8 w-full rounded-md border border-input bg-transparent px-2 py-1 text-xs [color-scheme:dark]"
                 aria-label="From date"
               />
               <input
@@ -96,7 +96,7 @@ export function TransactionFilterPopover({
                       : undefined,
                   })
                 }
-                className="flex h-8 w-full rounded-md border border-input bg-transparent px-2 py-1 text-xs"
+                className="flex h-8 w-full rounded-md border border-input bg-transparent px-2 py-1 text-xs [color-scheme:dark]"
                 aria-label="To date"
               />
             </div>

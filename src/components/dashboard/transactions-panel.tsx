@@ -47,14 +47,18 @@ function daysAgo(days: number): string {
   return d.toISOString().slice(0, 10)
 }
 
+const NON_SPENDING_CATEGORIES = new Set([
+  "TRANSFER_OUT", "TRANSFER_IN", "LOAN_PAYMENTS", "INCOME",
+])
+
 function sumSpendingInDays(
   transactions: TransactionWithAccount[],
   days: number
 ): number {
   const cutoff = daysAgo(days)
   return transactions
-    .filter((t) => t.date >= cutoff)
-    .reduce((sum, t) => sum + Math.abs(t.amount), 0)
+    .filter((t) => t.date >= cutoff && t.amount > 0 && !NON_SPENDING_CATEGORIES.has(t.category_primary ?? ""))
+    .reduce((sum, t) => sum + t.amount, 0)
 }
 
 function getUniqueCategories(
